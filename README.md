@@ -10,6 +10,19 @@ python CausalBert.py
 
 This will train a system on some test data and calculate an average treatment effect (ATE). 
 
+#Using Greatlakes
+Run the command
+```
+sbatch run.sh
+```
+
+I have included some variables so that the machine runs, we may be able to decrease the amount of memory, from 10g to lower.
+
+#TODO
+Things we should do
+* Implement k-similar words
+* Replicate paper findings
+
 # Description
 
 As input this system expects data where each row consists of:
