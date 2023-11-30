@@ -337,7 +337,7 @@ if __name__ == '__main__':
     df = pd.read_csv('testdata.csv')
     cb = CausalBertWrapper(batch_size=2,
         g_weight=0.1, Q_weight=0.1, mlm_weight=1)
-    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
+    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=0)
     Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
     plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
     print("Q_ATT: ", Q_ATT)
