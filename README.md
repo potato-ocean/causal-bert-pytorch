@@ -21,7 +21,8 @@ I have included some variables so that the machine runs, we may be able to decre
 # TODO
 Things we should do
 * Implement k-similar words
-* Replicate paper findings
+* Estimators (Q)
+* Ground truth replication (nice to have)
 
 # Description
 
