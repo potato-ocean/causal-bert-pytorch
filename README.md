@@ -20,7 +20,7 @@ I have included some variables so that the machine runs, we may be able to decre
 
 # TODO
 Things we should do
-* Implement k-similar words
+* Implement k-similar words - which words are most similar to deep, neural, etc.
 * Estimators (Q)
 * Ground truth replication (nice to have)
 
