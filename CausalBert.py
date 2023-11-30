@@ -245,6 +245,38 @@ class CausalBertWrapper:
         preds = np.argmax(probs, axis=1)
 
         return probs, preds, Ys
+    
+    def Q_ATT(self, C, W, T, Y=None, platt_scaling=False):
+        Q_probs, _, Ys = self.inference(W, C, outcome=Y)
+        if platt_scaling and Y is not None:
+            Q0 = platt_scale(Ys, Q_probs[:, 0])[:, 0]
+            Q1 = platt_scale(Ys, Q_probs[:, 1])[:, 1]
+        else:
+            Q0 = Q_probs[:, 0]
+            Q1 = Q_probs[:, 1]
+        # We want to compute for only the T = 1 samples
+        df = pd.DataFrame({'Q1': Q1, 'Q0': Q0, 'T': T})
+        df_att = df[df['T'] == 1]
+        q1 = df_att['Q1']
+        q0 = df_att['Q0']
+        return np.mean(q1 - q0)
+    
+    def plug_in_ATT(self, C, W, T, g, Y=None, platt_scaling=False):
+        Q_probs, _, Ys = self.inference(W, C, outcome=Y)
+        if platt_scaling and Y is not None:
+            Q0 = platt_scale(Ys, Q_probs[:, 0])[:, 0]
+            Q1 = platt_scale(Ys, Q_probs[:, 1])[:, 1]
+        else:
+            Q0 = Q_probs[:, 0]
+            Q1 = Q_probs[:, 1]
+        # We want to compute for only the T = 1 samples
+        df = pd.DataFrame({'Q1': Q1, 'Q0': Q0, 'T': T, 'g': g})
+        df_att = df[df['T'] == 1]
+        q1 = df_att['Q1']
+        q0 = df_att['Q0']
+        gz = df_att['g']
+        t1 = df_att['T']
+        return np.sum((q1 - q0)*gz/t1)
 
     def ATE(self, C, W, Y=None, platt_scaling=False):
         Q_probs, _, Ys = self.inference(W, C, outcome=Y)
