@@ -40,10 +40,10 @@ Then the system will give the text to BERT, and use the BERT embeddings + confou
 Once trained the resulting BERT embeddings will be sufficient for some causal inferences. 
 
 # PeerRead
-From the paper, "We apply causal BERT to estimate the treatment effect of buzzy and theorem". Buzzy is 1 when the title contains any of "deep", "neural", "embed", or "adversarial net", and 0 otherwise, and Theorem is 1 if the word "Theorem" is in the paper. According to the paper, on PeerRead, both estimates suggest a positive effect from including a theorem on paper acceptance.
+From the paper, it seems that the treatment is theorem and buzzy is the confounder. Buzzy is 1 when the title contains any of "deep", "neural", "embed", or "adversarial net", and 0 otherwise, and Theorem is 1 if the word "Theorem" is in the paper. According to the paper, on PeerRead, both estimates (Q and Plugin estimator) suggest a positive effect from including a theorem on paper acceptance.
 
-Right now, it's unclear to me if table 1 on PeerRead dataset is for which treatment. both?
-
+The confounder is 1 if any of the buzzy words are included, 0 otherwise.
+The treatment is 1 if there is a theorem. How is the theorem found?
 
 # Example
 
