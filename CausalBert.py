@@ -370,6 +370,7 @@ def run_on_peer_read_data():
 
 if __name__ == '__main__':
     run_on_test_data()
+    run_on_peer_read_data()
 
 
 
