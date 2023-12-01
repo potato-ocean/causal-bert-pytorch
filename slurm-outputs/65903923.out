@@ -1,0 +1,4 @@
+  File "/home/genakim/causal-bert-pytorch/CausalBert.py", line 357
+    | df['abstract_contains_gan']
+    ^
+SyntaxError: invalid syntax

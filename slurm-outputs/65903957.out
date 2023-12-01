@@ -1,0 +1,27 @@
+Some weights of CausalBert were not initialized from the model checkpoint at distilbert-base-uncased and are newly initialized: ['Q_cls.1.2.bias', 'g_cls.weight', 'Q_cls.1.2.weight', 'Q_cls.1.0.weight', 'Q_cls.0.0.weight', 'Q_cls.0.0.bias', 'Q_cls.0.2.weight', 'Q_cls.0.2.bias', 'g_cls.bias', 'Q_cls.1.0.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Traceback (most recent call last):
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/pandas/core/indexes/base.py", line 2897, in get_loc
+    return self._engine.get_loc(key)
+  File "pandas/_libs/index.pyx", line 107, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 131, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1607, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1614, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'abstract_contains_gan'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "CausalBert.py", line 369, in <module>
+    run_on_peer_read_data()
+  File "CausalBert.py", line 356, in run_on_peer_read_data
+    df['C'] = df['abstract_contains_deep'] | df['abstract_contains_neural'] | df['abstract_contains_embedding'] | df['abstract_contains_gan']
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/pandas/core/frame.py", line 2995, in __getitem__
+    indexer = self.columns.get_loc(key)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/pandas/core/indexes/base.py", line 2899, in get_loc
+    return self._engine.get_loc(self._maybe_cast_indexer(key))
+  File "pandas/_libs/index.pyx", line 107, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/index.pyx", line 131, in pandas._libs.index.IndexEngine.get_loc
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1607, in pandas._libs.hashtable.PyObjectHashTable.get_item
+  File "pandas/_libs/hashtable_class_helper.pxi", line 1614, in pandas._libs.hashtable.PyObjectHashTable.get_item
+KeyError: 'abstract_contains_gan'
