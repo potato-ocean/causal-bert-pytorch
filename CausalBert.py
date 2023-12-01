@@ -368,7 +368,7 @@ def run_on_peer_read_data():
     print("plug_in_ATT: ", plug_in_ATT)
 
 if __name__ == '__main__':
-    run_on_test_data()
+    #run_on_test_data()
     run_on_peer_read_data()
 
 
