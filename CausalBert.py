@@ -259,9 +259,9 @@ class CausalBertWrapper:
             Q1 = Q_probs[:, 1]
         # We want to compute for only the T = 1 samples
         df = pd.DataFrame({'Q1': Q1, 'Q0': Q0, 'T': T})
-        #df_att = df[df['T'] == 1]
-        q1 = df['Q1']
-        q0 = df['Q0']
+        df_att = df[df['T'] == 1]
+        q1 = df_att['Q1']
+        q0 = df_att['Q0']
         return np.mean(q1 - q0)
     
     def plug_in_ATT(self, C, W, T, g, Y=None, platt_scaling=False):
@@ -272,14 +272,13 @@ class CausalBertWrapper:
         else:
             Q0 = Q_probs[:, 0]
             Q1 = Q_probs[:, 1]
-        # We want to compute for only the T = 1 samples
         df = pd.DataFrame({'Q1': Q1, 'Q0': Q0, 'T': T, 'g': g})
         #df_att = df[df['T'] == 1]
         df_att = df
         q1 = df_att['Q1']
         q0 = df_att['Q0']
         gz = df_att['g']
-        t1 = df_att['T']
+        t1 = np.mean(df_att['T']) #this should be a probability
         return np.sum((q1 - q0)*gz/t1)
 
     def ATE(self, C, W, Y=None, platt_scaling=False):
