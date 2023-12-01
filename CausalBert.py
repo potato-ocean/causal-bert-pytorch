@@ -355,7 +355,9 @@ def run_on_peer_read_data():
 
     df['text'] = df['abstract']
     df['C'] = df['title_contains_deep'] | df['title_contains_neural'] | df['title_contains_embedding'] | df['title_contains_gan']
+    df['C'] = df['C'].astype(int)
     df['T'] = df['num_ref_to_theorems'] > 0
+    df['T'] = df['T'].astype(int)
     df['Y'] = df['accepted']
     
     cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
