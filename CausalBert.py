@@ -31,6 +31,9 @@ from sklearn.linear_model import LogisticRegression
 from tqdm import tqdm
 import math
 
+import pandas as pd
+
+
 CUDA = (torch.cuda.device_count() > 0)
 MASK_IDX = 103
 
@@ -332,7 +335,6 @@ class CausalBertWrapper:
         return dataloader
 
 def run_on_test_data():
-    import pandas as pd
 
     df = pd.read_csv('testdata.csv')
     cb = CausalBertWrapper(batch_size=2,
@@ -346,14 +348,13 @@ def run_on_test_data():
     print("plug_in_ATT: ", plug_in_ATT)
 
 def run_on_peer_read_data():
-    import pandas as pd
 
     df = pd.read_csv('PeerRead_with_abstracts.zip')
     cb = CausalBertWrapper(batch_size=2,
         g_weight=0.1, Q_weight=0.1, mlm_weight=1)
 
     df['text'] = df['abstract']
-    df['C'] = df['abstract_contains_deep'] | df['abstract_contains_neural'] | df['abstract_contains_embedding'] | df['abstract_contains_gan']
+    df['C'] = df['title_contains_deep'] | df['title_contains_neural'] | df['title_contains_embedding'] | df['title_contains_gan']
     df['T'] = df['num_ref_to_theorems'] > 0
     df['Y'] = df['accepted']
     
