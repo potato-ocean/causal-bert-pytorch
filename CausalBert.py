@@ -353,8 +353,7 @@ def run_on_peer_read_data():
         g_weight=0.1, Q_weight=0.1, mlm_weight=1)
 
     df['text'] = df['abstract']
-    df['C'] = df['abstract_contains_deep'] | df['abstract_contains_neural'] | df['abstract_contains_embedding'] 
-    | df['abstract_contains_gan']
+    df['C'] = df['abstract_contains_deep'] | df['abstract_contains_neural'] | df['abstract_contains_embedding'] | df['abstract_contains_gan']
     df['T'] = df['num_ref_to_theorems'] > 0
     df['Y'] = df['accepted']
     
