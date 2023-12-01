@@ -358,7 +358,7 @@ def run_on_peer_read_data():
     df['T'] = df['num_ref_to_theorems'] > 0
     df['Y'] = df['accepted']
     
-    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=0)
+    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
     ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
     Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
     plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
