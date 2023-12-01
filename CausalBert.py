@@ -256,9 +256,9 @@ class CausalBertWrapper:
             Q1 = Q_probs[:, 1]
         # We want to compute for only the T = 1 samples
         df = pd.DataFrame({'Q1': Q1, 'Q0': Q0, 'T': T})
-        df_att = df[df['T'] == 1]
-        q1 = df_att['Q1']
-        q0 = df_att['Q0']
+        #df_att = df[df['T'] == 1]
+        q1 = df['Q1']
+        q0 = df['Q0']
         return np.mean(q1 - q0)
     
     def plug_in_ATT(self, C, W, T, g, Y=None, platt_scaling=False):
@@ -271,7 +271,8 @@ class CausalBertWrapper:
             Q1 = Q_probs[:, 1]
         # We want to compute for only the T = 1 samples
         df = pd.DataFrame({'Q1': Q1, 'Q0': Q0, 'T': T, 'g': g})
-        df_att = df[df['T'] == 1]
+        #df_att = df[df['T'] == 1]
+        df_att = df
         q1 = df_att['Q1']
         q0 = df_att['Q0']
         gz = df_att['g']
@@ -330,18 +331,45 @@ class CausalBertWrapper:
 
         return dataloader
 
-
-if __name__ == '__main__':
+def run_on_test_data():
     import pandas as pd
 
     df = pd.read_csv('testdata.csv')
     cb = CausalBertWrapper(batch_size=2,
         g_weight=0.1, Q_weight=0.1, mlm_weight=1)
     cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=0)
+    ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
     Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
     plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
+    print("ATE: ", ATE)
     print("Q_ATT: ", Q_ATT)
     print("plug_in_ATT: ", plug_in_ATT)
+
+def run_on_peer_read_data():
+    import pandas as pd
+
+    df = pd.read_csv('PeerRead_with_abstracts.zip')
+    cb = CausalBertWrapper(batch_size=2,
+        g_weight=0.1, Q_weight=0.1, mlm_weight=1)
+
+    df['text'] = df['abstract']
+    df['C'] = df['abstract_contains_deep'] | df['abstract_contains_neural'] | df['abstract_contains_embedding'] 
+    | df['abstract_contains_gan']
+    df['T'] = df['num_ref_to_theorems'] > 0
+    df['Y'] = df['accepted']
+    
+    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=0)
+    ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
+    Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
+    plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
+    print("ATE: ", ATE)
+    print("Q_ATT: ", Q_ATT)
+    print("plug_in_ATT: ", plug_in_ATT)
+
+if __name__ == '__main__':
+    run_on_test_data()
+
+
 
 
 
