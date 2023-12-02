@@ -51,4 +51,3 @@ def sim(tokens, original_buzzy_embeddings, threshold=0.7):
   return similar_words
 
 results = set(df['tokens'].apply(lambda x: sim(x, original_buzzy_embeddings)))
-#df['results'] = 
