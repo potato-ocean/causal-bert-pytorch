@@ -279,7 +279,7 @@ class CausalBertWrapper:
         q0 = df_att['Q0']
         gz = df_att['g']
         t1 = np.mean(df_att['T']) #this should be a probability
-        return np.sum((q1 - q0)*gz/t1)
+        return np.mean((q1 - q0)*gz/t1)
 
     def ATE(self, C, W, Y=None, platt_scaling=False):
         Q_probs, _, Ys = self.inference(W, C, outcome=Y)
@@ -333,6 +333,7 @@ class CausalBertWrapper:
 
         return dataloader
 
+
 def run_on_test_data():
 
     df = pd.read_csv('testdata.csv')
@@ -368,6 +369,8 @@ def run_on_peer_read_data():
     print("ATE: ", ATE)
     print("Q_ATT: ", Q_ATT)
     print("plug_in_ATT: ", plug_in_ATT)
+
+    torch.save(cb, './causal-bert-peer-read')
 
 if __name__ == '__main__':
     #run_on_test_data()

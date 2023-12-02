@@ -1,0 +1,4 @@
+Peer Read data
+ATE:  0.02860984960240406
+Q_ATT:  -0.02860984960240406
+plug_in_ATT:  nan

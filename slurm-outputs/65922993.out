@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 306, in _check_seekable
+    f.seek(f.tell())
+AttributeError: type object 'CausalBertWrapper' has no attribute 'seek'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "CausalBertInference.py", line 5, in <module>
+    cb = torch.load(CausalBertWrapper, ',/causal-bert-peer-read')
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 571, in load
+    with _open_file_like(f, 'rb') as opened_file:
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 234, in _open_file_like
+    return _open_buffer_reader(name_or_buffer)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 219, in __init__
+    _check_seekable(buffer)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 309, in _check_seekable
+    raise_err_msg(["seek", "tell"], e)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 302, in raise_err_msg
+    raise type(e)(msg)
+AttributeError: type object 'CausalBertWrapper' has no attribute 'seek'. You can only torch.load from a file that is seekable. Please pre-load the data into a buffer like io.BytesIO and try to load from it instead.

@@ -1,0 +1,25 @@
+Some weights of CausalBert were not initialized from the model checkpoint at distilbert-base-uncased and are newly initialized: ['Q_cls.1.2.bias', 'Q_cls.0.2.bias', 'Q_cls.0.0.bias', 'Q_cls.1.2.weight', 'Q_cls.0.0.weight', 'g_cls.weight', 'Q_cls.1.0.weight', 'Q_cls.1.0.bias', 'g_cls.bias', 'Q_cls.0.2.weight']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/transformers/tokenization_utils_base.py:2218: FutureWarning: The `pad_to_max_length` argument is deprecated and will be removed in a future version, use `padding=True` or `padding='longest'` to pad to the longest sequence in the batch, or use `padding='max_length'` to pad to a max length. In this case, you can give a specific length with `max_length` (e.g. `max_length=45`) or leave max_length to None to pad to the maximal input size of the model (e.g. 512 for Bert).
+  FutureWarning,
+  0%|          | 0/5889 [00:00<?, ?it/s]  0%|          | 0/5889 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "CausalBert.py", line 372, in <module>
+    run_on_peer_read_data()
+  File "CausalBert.py", line 361, in run_on_peer_read_data
+    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
+  File "CausalBert.py", line 218, in train
+    g, Q0, Q1, g_loss, Q_loss, mlm_loss = self.model(W_ids, W_len, W_mask, C, T, Y)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/nn/modules/module.py", line 722, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "CausalBert.py", line 140, in forward
+    g_loss = CrossEntropyLoss()(g.view(-1, self.num_labels), T.view(-1))
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/nn/modules/module.py", line 722, in _call_impl
+    result = self.forward(*input, **kwargs)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/nn/modules/loss.py", line 948, in forward
+    ignore_index=self.ignore_index, reduction=self.reduction)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/nn/functional.py", line 2422, in cross_entropy
+    return nll_loss(log_softmax(input, 1), target, weight, None, ignore_index, None, reduction)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/nn/functional.py", line 2218, in nll_loss
+    ret = torch._C._nn.nll_loss(input, target, weight, _Reduction.get_enum(reduction), ignore_index)
+RuntimeError: Expected object of scalar type Long but got scalar type Bool for argument #2 'target' in call to _thnn_nll_loss_forward
