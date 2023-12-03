@@ -371,7 +371,8 @@ def run_on_peer_read_data():
     print("Q_ATT: ", Q_ATT)
     print("plug_in_ATT: ", plug_in_ATT)
 
-    torch.save(cb.model, './causal-bert-peer-read')
+    #torch.save(cb, './causal-bert-peer-read-wrapper')
+    torch.save(cb.model.state_dict(), './causal-bert-peer-read-wrapper')
 
 if __name__ == '__main__':
     #run_on_test_data()

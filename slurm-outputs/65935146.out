@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "CausalBertInference.py", line 7, in <module>
+    cb = torch.load_state_dict('./causal-bert-peer-read-wrapper')
+AttributeError: module 'torch' has no attribute 'load_state_dict'

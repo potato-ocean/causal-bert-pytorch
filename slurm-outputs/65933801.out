@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "CausalBertInference.py", line 6, in <module>
+    cb = torch.load('./causal-bert-peer-read-wrapper')
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 584, in load
+    return _load(opened_zipfile, map_location, pickle_module, **pickle_load_args)
+  File "/home/genakim/causal-bert-pytorch/causal-bert-pytorch-env/lib64/python3.6/site-packages/torch/serialization.py", line 842, in _load
+    result = unpickler.load()
+_pickle.UnpicklingError: NEWOBJ class argument isn't a type object
