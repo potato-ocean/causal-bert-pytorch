@@ -3,6 +3,7 @@ from transformers import BertTokenizer, BertModel
 import torch
 import pandas as pd
 import logging
+import numpy as np
 
 logger = logging.getLogger('my_logger')
 logger.setLevel(logging.DEBUG)
@@ -88,12 +89,12 @@ def sim(abstract, original_buzzy_embeddings, cos, threshold=0.9):
     for token, word_embed in zip(tokens, token_vecs):
         for word, emb in original_buzzy_embeddings.items():
             similarity = 1 - cos(word_embed, emb[1, :])
-            logger.info(f"{similarity}")
             if similarity > threshold: #and word not in original_buzzy:
                 similar_words[token] = similarity
     return similar_words
 
 cos = torch.nn.CosineSimilarity(dim=0)
+
 logger.info("start top k")
 L = df.head(5)['abstract'].apply(lambda x: sim(x, original_buzzy_embeddings, cos))
 similar_words = {}
@@ -104,3 +105,18 @@ file_path = "similar_words.txt"
 with open(file_path, 'w') as file:
     for k, v in similar_words.items():
         file.write(f'{k} : {v}' + '\n')
+# logger.info("start top k")
+# for i, chunk in enumerate(np.array_split(df, 120)):
+#     similar_words = {}
+#     logger.info(f'{chunk["abstract"]}')
+#     L = chunk['abstract'].apply(lambda x: sim(x, original_buzzy_embeddings, cos))
+#     logger.info(f'{L}')
+#     for d in L:
+#         similar_words.update(d)
+#     logger.info(f"Done top k for chunk {i}")
+#     file_path = "similar_words.txt"
+#     with open(file_path, 'a') as file:
+#         for k, v in similar_words.items():
+#             logger.info(f'{k}')
+#             file.write(f'{k} : {v}' + '\n')
+#     logger.info(f"Wrote to file for chunk {i}")
