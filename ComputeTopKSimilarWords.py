@@ -4,6 +4,9 @@ import torch
 import pandas as pd
 import logging
 
+from transformers import DistilBertTokenizer
+from transformers import DistilBertModel
+
 logger = logging.getLogger('my_logger')
 logger.setLevel(logging.DEBUG)
 
@@ -20,8 +23,9 @@ logger.addHandler(file_handler)
 
 original_buzzy = ['deep', 'neural', 'embed', 'adversarial net']
 
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased') #replace with bert tokenizer
-model = BertModel.from_pretrained('bert-base-uncased', output_hidden_states=True)
+tokenizer = DistilBertTokenizer.from_pretrained(
+                'distilbert-base-uncased', do_lower_case=True)
+model = DistilBertModel.from_pretrained("./causal-bert-peer-read-wrapper")
     
 def tokenize(text):
     marked_text = "[CLS] " + text + " [SEP]"
