@@ -362,7 +362,7 @@ def run_on_peer_read_data():
     df['T'] = df['T'].astype(int)
     df['Y'] = df['accepted']
     
-    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=0)
+    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
     ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
     Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
     plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
@@ -374,9 +374,56 @@ def run_on_peer_read_data():
     #torch.save(cb, './causal-bert-peer-read-wrapper')
     cb.model.save_pretrained("fine-tuned-causal-bert")
 
+def run_on_peer_read_data_top(textFile):
+
+    df = pd.read_csv('PeerRead_with_abstracts.zip')
+    cb = CausalBertWrapper(batch_size=2,
+        g_weight=0.1, Q_weight=0.1, mlm_weight=1)
+    
+    words = []
+    
+    with open(textFile) as file:
+        words.append(file.readLines())
+
+    print(words)
+
+    def contains_words(abstract, words = ):
+        for word in words:
+            if word in abstract:
+                return 1
+        return 0
+
+
+
+    df['text'] = df['abstract']
+    df['C'] = df['abstract'].apply(lambda abstract: contains_words(abstract))
+    df['C'] = df['C'].astype(int)
+    df['T'] = df['num_ref_to_theorems'] > 0
+    df['T'] = df['T'].astype(int)
+    df['Y'] = df['accepted']
+
+    print(df['C'])
+    
+    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
+    ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
+    Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
+    plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
+    print("Peer Read data top " + textFile)
+    print("ATE: ", ATE)
+    print("Q_ATT: ", Q_ATT)
+    print("plug_in_ATT: ", plug_in_ATT)
+
+    #torch.save(cb, './causal-bert-peer-read-wrapper')
+    cb.model.save_pretrained("fine-tuned-causal-bert-top-" + textFile)
+
 if __name__ == '__main__':
     #run_on_test_data()
-    run_on_peer_read_data()
+    run_on_peer_read_data_top('top10.txt')
+    run_on_peer_read_data_top('top20.txt')
+    run_on_peer_read_data_top('top50.txt')
+
+
+
 
 
 
