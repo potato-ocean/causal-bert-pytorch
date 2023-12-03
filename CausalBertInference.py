@@ -7,25 +7,31 @@ import pandas as pd
 from scipy.stats import norm, bernoulli
 
 
-if __name__ == '__main__':
+
+def compute_model_dependent_stats(df):
     cb = CausalBertWrapper()
     model = cb.model
     model.load_state_dict(torch.load('./causal-bert-peer-read-wrapper'))
     model.eval()
-    print('reading csv')
-    df = pd.read_csv('PeerRead_with_abstracts.zip')
-    df['text'] = df['abstract']
-    df['C'] = df['title_contains_deep'] | df['title_contains_neural'] | df['title_contains_embedding'] | df['title_contains_gan']
-    df['C'] = df['C'].astype(int)
-    df['T'] = df['num_ref_to_theorems'] > 0
-    df['T'] = df['T'].astype(int)
-    df['Y'] = df['accepted']
+    
 
     ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
     Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
     plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g']) #multiplied by 10???
-    print('done reading csv')    
+    
 
+    
+
+
+    print("Peer Read data")
+    print("ATE: ", ATE)
+    print("Q_ATT: ", Q_ATT)
+    print("plug_in_ATT: ", plug_in_ATT)
+
+
+
+
+def compute_model_independent_stats(df):
     def simulation(z, b_1 = 5):
         pi_z = 0.07
         if z == 1:
@@ -42,18 +48,29 @@ if __name__ == '__main__':
         print("y1",y1)
         print("y0", y0)
 
-        return y0, y1
+        return y0*1.0, y1*1.0
 
-    df['Y0'], df['Y1'] = df.apply(lambda row: simulation(row['C']), result_type="expand", axis=1)
-    df_att = df[df['T'] == 1]
-
-    ground_truth_att = np.mean(df_att['Y0'] - df_att['Y1'])
+    y0s, y1s = df.apply(lambda row: simulation(row['C']), result_type="expand", axis=1)
+    print(y0s)
+    print(y1s)
+    #assert df['Y0'].sum() != 0
+    #assert df['Y1'].sum() != df['Y1'].__len__
     print(df)
-    print(df[df['Y0'] != 0])
+    df_att = df[df['T'] == 1]
+    #ground_truth_att = np.mean(df_att['Y0'] - df_att['Y1'])
+    #print("ground_truth_att: ", ground_truth_att)
 
-    print("Peer Read data")
-    print("ATE: ", ATE)
-    print("Q_ATT: ", Q_ATT)
-    print("plug_in_ATT: ", plug_in_ATT)
-    print("ground_truth_att: ", ground_truth_att)
 
+
+if __name__ == '__main__':
+    print('reading csv')
+    df = pd.read_csv('PeerRead_with_abstracts.zip')
+    df['text'] = df['abstract']
+    df['C'] = df['title_contains_deep'] | df['title_contains_neural'] | df['title_contains_embedding'] | df['title_contains_gan']
+    df['C'] = df['C'].astype(int)
+    df['T'] = df['num_ref_to_theorems'] > 0
+    df['T'] = df['T'].astype(int)
+    df['Y'] = df['accepted']
+    print('done reading csv')
+   #compute_model_dependent_stats(df)
+    compute_model_independent_stats(df)    
