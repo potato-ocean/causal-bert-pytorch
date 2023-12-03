@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd 
 from scipy.stats import norm, bernoulli
 
-def simulation(n, z, pi_z, b_1, gamma, binary_outcome=True):
+def simulation(n, z, b_1, gamma, binary_outcome=True):
     # n is the number of data
     # z is our confounder here to input
     # t is the treatment to input 
