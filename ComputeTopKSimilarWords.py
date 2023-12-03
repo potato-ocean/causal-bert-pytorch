@@ -8,6 +8,7 @@ import numpy as np
 from transformers import DistilBertTokenizer
 from transformers import DistilBertModel
 
+logging.basicConfig(filemode='w')
 logger = logging.getLogger('my_logger')
 logger.setLevel(logging.DEBUG)
 
@@ -22,7 +23,15 @@ file_handler.setFormatter(formatter)
 # Add the file handler to the logger
 logger.addHandler(file_handler)
 
-original_buzzy = ['deep', 'neural', 'embed', 'adversarial net']
+deep = "moreover , unlike the original nade , our training procedure scales to deep models ."
+
+neural = "scalability properties of deep neural networks raise key research questions , particularly as the problems considered become larger and more challenging ."
+
+embed = "deep learning embeddings have been successfully used for many natural language processing ( nlp ) problems ."
+
+adversarial = "we introduce a class of cnns called deep convolutional generative adversarial networks ( dcgans ) , that have certain architectural constraints , and demonstrate that they are a strong candidate for unsupervised learning ."
+
+contextualized_buzzy = [deep, neural, embed, adversarial]
 
 tokenizer = BertTokenizer.from_pretrained('distilbert-base-uncased') #replace with bert tokenizer
 model = BertModel.from_pretrained('fine-tuned-causal-bert', output_hidden_states=True)
@@ -82,16 +91,37 @@ def get_embedding(text):
     return tokens, token_vecs, sentence_embedding
 
 original_buzzy_embeddings = {}
-for w in original_buzzy:
-    original_buzzy_embeddings[w] = get_embedding(w)[1]
+HOLD_AD = []
+HOLD_EMB = []
+for part in contextualized_buzzy:
+    e = get_embedding(part)
+    for token, token_vec in zip(e[0], e[1]):
+        #logger.info(f'{token}')
+        if token in ["ad", "##vers", "##aria", "##l]"]:
+            HOLD_AD.append(token_vec)
+        if token in ["em", "##bed", "##ding", "##s"]:
+            HOLD_EMB.append(token_vec)
+        if token in ['deep', 'embedding', 'adversarial', 'neural']:
+            original_buzzy_embeddings[token] = get_embedding(token)[1][1, :] # rid of [cls] and [sep]
+
+original_buzzy_embeddings["adversarial"] = torch.stack(HOLD_AD, dim=0).sum(dim=0).squeeze()
+original_buzzy_embeddings["embed"] = torch.stack(HOLD_EMB, dim=0).sum(dim=0).squeeze()
+
+# logger.info(f'{original_buzzy_embeddings["adversarial"]}')
 
 df = pd.read_csv("PeerRead_with_abstract.csv")
-def sim(abstract, original_buzzy_embeddings, cos, threshold=0.9):
+def sim(abstract, original_buzzy_embeddings, cos, threshold=0.3):
     similar_words = {}
     tokens, token_vecs, _ = get_embedding(abstract)
     for token, word_embed in zip(tokens, token_vecs):
         for word, emb in original_buzzy_embeddings.items():
-            similarity = 1 - cos(word_embed, emb[1, :])
+            # logger.info(f"{word_embed}")
+            # logger.info(f"{emb[1, :]}")
+            # logger.info(f'{word_embed.shape}')
+            # logger.info(f'{emb.shape}')
+            similarity = 1 - cos(word_embed, emb)
+            # logger.info(f'{word}, {token}')
+            # logger.info(f'{similarity}')
             if similarity > threshold: #and word not in original_buzzy:
                 similar_words[token] = similarity
     return similar_words
@@ -99,7 +129,7 @@ def sim(abstract, original_buzzy_embeddings, cos, threshold=0.9):
 cos = torch.nn.CosineSimilarity(dim=0)
 
 logger.info("start top k")
-L = df.head(5)['abstract'].apply(lambda x: sim(x, original_buzzy_embeddings, cos))
+L = df['abstract'].apply(lambda x: sim(x, original_buzzy_embeddings, cos))
 similar_words = {}
 for d in L:
     similar_words.update(d)
