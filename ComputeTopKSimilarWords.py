@@ -5,6 +5,9 @@ import pandas as pd
 import logging
 import numpy as np
 
+from transformers import DistilBertTokenizer
+from transformers import DistilBertModel
+
 logger = logging.getLogger('my_logger')
 logger.setLevel(logging.DEBUG)
 
