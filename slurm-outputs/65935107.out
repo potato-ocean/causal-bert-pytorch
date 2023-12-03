@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "CausalBertInference.py", line 8, in <module>
+    cb.eval()
+AttributeError: 'collections.OrderedDict' object has no attribute 'eval'

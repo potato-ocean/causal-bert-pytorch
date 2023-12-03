@@ -4,7 +4,7 @@ import torch
 
 original_buzzy = ['deep', 'neural', 'embed', 'adversarial net']
 
-tokenizer = BertTokenizer.from_pretrained('bert-base-uncased') #different model
+tokenizer = BertTokenizer.from_pretrained('bert-base-uncased') #replace with bert tokenizer
 model = BertModel.from_pretrained('bert-base-uncased', output_hidden_states=True)
     
 def tokenize(text):
