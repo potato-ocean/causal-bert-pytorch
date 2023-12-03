@@ -23,9 +23,8 @@ logger.addHandler(file_handler)
 
 original_buzzy = ['deep', 'neural', 'embed', 'adversarial net']
 
-tokenizer = DistilBertTokenizer.from_pretrained(
-                'distilbert-base-uncased', do_lower_case=True)
-model = DistilBertModel.from_pretrained("./causal-bert-peer-read-wrapper")
+tokenizer = BertTokenizer.from_pretrained('distilbert-base-uncased') #replace with bert tokenizer
+model = BertModel.from_pretrained('fine-tuned-causal-bert', output_hidden_states=True)
     
 def tokenize(text):
     marked_text = "[CLS] " + text + " [SEP]"
@@ -99,7 +98,7 @@ def sim(abstract, original_buzzy_embeddings, cos, threshold=0.9):
 
 cos = torch.nn.CosineSimilarity(dim=0)
 logger.info("start top k")
-L = df['abstract'].apply(lambda x: sim(x, original_buzzy_embeddings, cos))
+L = df.head(5)['abstract'].apply(lambda x: sim(x, original_buzzy_embeddings, cos))
 similar_words = {}
 for d in L:
     similar_words.update(d)

@@ -8,4 +8,5 @@
 #SBATCH --gpus-per-node=1
 #SBATCH --mail-type=begin,end
 #SBATCH --mail-user=nrdavid@umich.edu
+#SBATCH -o ./slurm-outputs/%j.out
 python ComputeTopKSimilarWords.py > slurm-outputs/output-$SLURM_JOBID.txt
