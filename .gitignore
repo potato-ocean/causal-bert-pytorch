@@ -1,8 +1,9 @@
-<<<<<<< HEAD
 causal-bert-peer-read
 causal-bert-peer-read-wrapper
-=======
->>>>>>> e93930595e780e9d3ed1d35407f3940316fe15c3
+fine-tuned-causal-bert-top-top10.txt
+fine-tuned-causal-bert-top-top20.txt
+fine-tuned-causal-bert-top-top50.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -32,7 +32,7 @@ def compute_model_dependent_stats(df):
 
 
 def compute_model_independent_stats(df):
-    def simulation(z, b_1 = 5):
+    def simulation_y0(z, b_1 = 5):
         pi_z = 0.07
         if z == 1:
             pi_z = 0.27
@@ -48,17 +48,36 @@ def compute_model_independent_stats(df):
         print("y1",y1)
         print("y0", y0)
 
-        return y0*1.0, y1*1.0
+        return y0
+    
+    def simulation_y1(z, b_1 = 5):
+        pi_z = 0.07
+        if z == 1:
+            pi_z = 0.27
+        else:
+            pi_z = 0.07
+        
+        y1_prob = 1/(1 + np.exp(0.25 * 1 + b_1 * (pi_z - 0.2)))
+        y0_prob = 1/(1 + np.exp(0.25 * 0 + b_1 * (pi_z - 0.2)))
+        print("y1prob", y1_prob)
+        print("y0prob", y0_prob)
+        y1 = bernoulli.rvs(y1_prob)
+        y0 = bernoulli.rvs(y0_prob)
+        print("y1",y1)
+        print("y0", y0)
 
-    y0s, y1s = df.apply(lambda row: simulation(row['C']), result_type="expand", axis=1)
-    print(y0s)
-    print(y1s)
-    #assert df['Y0'].sum() != 0
-    #assert df['Y1'].sum() != df['Y1'].__len__
+        return y1
+
+
+    df['Y0'] = df['C'].apply((lambda x: simulation_y0(x)))
+    df['Y1'] = df['C'].apply((lambda x: simulation_y1(x)))
+
+    assert df['Y0'].sum() != 0
+    assert df['Y1'].sum() != df['Y1'].__len__
     print(df)
     df_att = df[df['T'] == 1]
-    #ground_truth_att = np.mean(df_att['Y0'] - df_att['Y1'])
-    #print("ground_truth_att: ", ground_truth_att)
+    ground_truth_att = np.mean(df_att['Y0'] - df_att['Y1'])
+    print("ground_truth_att: ", ground_truth_att)
 
 
 
@@ -72,5 +91,5 @@ if __name__ == '__main__':
     df['T'] = df['T'].astype(int)
     df['Y'] = df['accepted']
     print('done reading csv')
-   #compute_model_dependent_stats(df)
+    compute_model_dependent_stats(df)
     compute_model_independent_stats(df)    

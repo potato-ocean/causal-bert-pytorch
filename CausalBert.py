@@ -381,19 +381,18 @@ def run_on_peer_read_data_top(textFile):
         g_weight=0.1, Q_weight=0.1, mlm_weight=1)
     
     words = []
-    
+
     with open(textFile) as file:
-        words.append(file.readLines())
+        words.append(file.readlines())
 
-    print(words)
-
-    def contains_words(abstract, words = ):
-        for word in words:
+    def contains_words(abstract):
+        for word in words[0]:
+            word = word.strip()
+            word = word.lower()
+            abstract = abstract.lower()
             if word in abstract:
                 return 1
         return 0
-
-
 
     df['text'] = df['abstract']
     df['C'] = df['abstract'].apply(lambda abstract: contains_words(abstract))
@@ -413,7 +412,7 @@ def run_on_peer_read_data_top(textFile):
     print("Q_ATT: ", Q_ATT)
     print("plug_in_ATT: ", plug_in_ATT)
 
-    #torch.save(cb, './causal-bert-peer-read-wrapper')
+    torch.save(cb, './causal-bert-peer-read-wrapper')
     cb.model.save_pretrained("fine-tuned-causal-bert-top-" + textFile)
 
 if __name__ == '__main__':
