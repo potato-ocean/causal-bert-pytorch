@@ -10,19 +10,16 @@ python CausalBert.py
 
 This will train a system on some test data and calculate an average treatment effect (ATE). 
 
-# Using Greatlakes
-Run the command
+# Replicating the experiments in the paper
+To train CausalBert, run:
 ```
-sbatch run.sh
+sbatch run_training.sh
 ```
 
-I have included some variables so that the machine runs, we may be able to decrease the amount of memory, from 10g to lower.
-
-# TODO
-Things we should do
-* Implement k-similar words - which words are most similar to deep, neural, etc.
-* Estimators (Q)
-* Ground truth replication (nice to have)
+This will save a model to your local machine. To run inference and compute the ATT/ATE and ground-truth estimates, run
+```
+sbatch run_inference.sh
+```
 
 # Description
 
