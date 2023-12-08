@@ -10,6 +10,8 @@ python CausalBert.py
 
 This will train a system on some test data and calculate an average treatment effect (ATE). 
 
+If the requirements.txt does not suffice to set up your environment, try using genas_requirements.txt. This is an environment that was frozen using pip freeze.
+
 # Replicating the experiments in the paper with SLURM
 To train CausalBert, run:
 ```
@@ -20,6 +22,13 @@ This will save a model to your local machine. To run inference and compute the A
 ```
 sbatch run_inference.sh
 ```
+
+To generate the top-k similar buzzy words, run
+```
+sbatch test_topk.sh
+```
+
+To run the buzzy words experiment, run 
 
 # Description
 
