@@ -371,8 +371,8 @@ def run_on_peer_read_data():
     print("Q_ATT: ", Q_ATT)
     print("plug_in_ATT: ", plug_in_ATT)
 
-    propensity_score_0 = len(df[(df['C'] == 1) & (df['T'] == 1)/len(df[df['C'] == 1])
-    propensity_score_1 = len(df[(df['C'] == 0) &  (df['T'] == 1)])/len(df['C'] == 0)
+    propensity_score_0 = len(df[(df['C'] == 0) & (df['T'] == 1)])/len(df[df['C'] == 0])
+    propensity_score_1 = len(df[(df['C'] == 1) & (df['T'] == 1)])/len(df[df['C'] == 1])
 
     print("Peer read propensity score for 0", propensity_score_0)
     print("Peer read propensity score for 1", propensity_score_1)
@@ -407,12 +407,12 @@ def run_on_peer_read_data_top(textFile):
     df['T'] = df['num_ref_to_theorems'] > 0
     df['T'] = df['T'].astype(int)
     df['Y'] = df['accepted']
-    propensity_score_0 = len(df[(df['C'] == 1) & (df['T'] == 1)/len(df[df['C'] == 1])
-    propensity_score_1 = len(df[(df['C'] == 0) &  (df['T'] == 1)])/len(df['C'] == 0)
+    propensity_score_0 = len(df[(df['C'] == 0) & (df['T'] == 1)])/len(df[df['C'] == 0])
+    propensity_score_1 = len(df[(df['C'] == 1) & (df['T'] == 1)])/len(df[df['C'] == 1])
 
     print(df['C'])
-    print("Peer read propensity score for 0", propensity_score_0)
-    print("Peer read propensity score for 1", propensity_score_1)
+    print("Peer read top k propensity score for 0", propensity_score_0)
+    print("Peer read top k propensity score for 1", propensity_score_1)
     
     #cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
     ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
