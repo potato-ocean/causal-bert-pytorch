@@ -417,6 +417,7 @@ def run_on_peer_read_data_top(textFile):
 
 if __name__ == '__main__':
     #run_on_test_data()
+    run_on_peer_read_data()
     run_on_peer_read_data_top('top10.txt')
     run_on_peer_read_data_top('top20.txt')
     run_on_peer_read_data_top('top50.txt')
