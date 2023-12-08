@@ -13,10 +13,12 @@ This will train a system on some test data and calculate an average treatment ef
 If the requirements.txt does not suffice to set up your environment, try using genas_requirements.txt. This is an environment that was frozen using pip freeze.
 
 # Replicating the experiments in the paper with SLURM
-To train CausalBert, run:
+To train CausalBert on PeerRead data, run:
 ```
 sbatch run_training.sh
 ```
+
+This will train CausalBert on PeerRead data, along with the various levels of confounding of the top-k buzzy words.
 
 This will save a model to your local machine. To run inference and compute the ATT/ATE and ground-truth estimates, run
 ```
@@ -27,8 +29,6 @@ To generate the top-k similar buzzy words, run
 ```
 sbatch test_topk.sh
 ```
-
-To run the buzzy words experiment, run 
 
 # Description
 
