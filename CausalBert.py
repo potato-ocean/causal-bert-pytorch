@@ -362,7 +362,7 @@ def run_on_peer_read_data():
     df['T'] = df['T'].astype(int)
     df['Y'] = df['accepted']
     
-    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
+    #cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
     ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
     Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
     plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
@@ -370,6 +370,13 @@ def run_on_peer_read_data():
     print("ATE: ", ATE)
     print("Q_ATT: ", Q_ATT)
     print("plug_in_ATT: ", plug_in_ATT)
+
+    propensity_score_0 = len(df[(df['C'] == 1) & (df['T'] == 1)/len(df[df['C'] == 1])
+    propensity_score_1 = len(df[(df['C'] == 0) &  (df['T'] == 1)])/len(df['C'] == 0)
+
+    print("Peer read propensity score for 0", propensity_score_0)
+    print("Peer read propensity score for 1", propensity_score_1)
+
 
     #torch.save(cb, './causal-bert-peer-read-wrapper')
     cb.model.save_pretrained("fine-tuned-causal-bert")
@@ -400,10 +407,14 @@ def run_on_peer_read_data_top(textFile):
     df['T'] = df['num_ref_to_theorems'] > 0
     df['T'] = df['T'].astype(int)
     df['Y'] = df['accepted']
+    propensity_score_0 = len(df[(df['C'] == 1) & (df['T'] == 1)/len(df[df['C'] == 1])
+    propensity_score_1 = len(df[(df['C'] == 0) &  (df['T'] == 1)])/len(df['C'] == 0)
 
     print(df['C'])
+    print("Peer read propensity score for 0", propensity_score_0)
+    print("Peer read propensity score for 1", propensity_score_1)
     
-    cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
+    #cb.train(df['text'], df['C'], df['T'], df['Y'], epochs=1)
     ATE = cb.ATE(df['C'], df.text, platt_scaling=True)
     Q_ATT = cb.Q_ATT(df['C'], df['text'], df['T'])
     plug_in_ATT = cb.plug_in_ATT(df['C'], df['text'], df['T'], cb.loss_weights['g'])
@@ -412,7 +423,7 @@ def run_on_peer_read_data_top(textFile):
     print("Q_ATT: ", Q_ATT)
     print("plug_in_ATT: ", plug_in_ATT)
 
-    torch.save(cb, './causal-bert-peer-read-wrapper')
+    #torch.save(cb, './causal-bert-peer-read-wrapper')
     cb.model.save_pretrained("fine-tuned-causal-bert-top-" + textFile)
 
 if __name__ == '__main__':

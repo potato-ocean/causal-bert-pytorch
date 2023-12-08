@@ -29,6 +29,11 @@ def compute_model_dependent_stats(df):
     print("plug_in_ATT: ", plug_in_ATT)
 
 
+def compute_true_propensity_scores(df):
+    propensity_score_0 = df[df['C'] == 1]
+    propensity_score_1 = df[df['C'] == 0]
+
+
 
 
 def compute_model_independent_stats(df):
@@ -91,5 +96,5 @@ if __name__ == '__main__':
     df['T'] = df['T'].astype(int)
     df['Y'] = df['accepted']
     print('done reading csv')
-    compute_model_dependent_stats(df)
+    #compute_model_dependent_stats(df)
     compute_model_independent_stats(df)    
