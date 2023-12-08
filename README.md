@@ -10,7 +10,7 @@ python CausalBert.py
 
 This will train a system on some test data and calculate an average treatment effect (ATE). 
 
-# Replicating the experiments in the paper
+# Replicating the experiments in the paper with SLURM
 To train CausalBert, run:
 ```
 sbatch run_training.sh
