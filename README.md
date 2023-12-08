@@ -10,19 +10,25 @@ python CausalBert.py
 
 This will train a system on some test data and calculate an average treatment effect (ATE). 
 
-# Using Greatlakes
-Run the command
+If the requirements.txt does not suffice to set up your environment, try using genas_requirements.txt. This is an environment that was frozen using pip freeze.
+
+# Replicating the experiments in the paper with SLURM
+To train CausalBert on PeerRead data, run:
 ```
-sbatch run.sh
+sbatch run_training.sh
 ```
 
-I have included some variables so that the machine runs, we may be able to decrease the amount of memory, from 10g to lower.
+This will train CausalBert on PeerRead data, along with the various levels of confounding of the top-k buzzy words.
 
-# TODO
-Things we should do
-* Implement k-similar words - which words are most similar to deep, neural, etc.
-* Estimators (Q)
-* Ground truth replication (nice to have)
+This will save a model to your local machine. To run inference and compute the ATT/ATE and ground-truth estimates, run
+```
+sbatch run_inference.sh
+```
+
+To generate the top-k similar buzzy words, run
+```
+sbatch test_topk.sh
+```
 
 # Description
 
