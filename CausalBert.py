@@ -391,11 +391,11 @@ def run_on_peer_read_data_top(textFile):
             word = word.lower()
             abstract = abstract.lower()
             if word in abstract:
-                return 1
-        return 0
+                return True
+        return False
 
     df['text'] = df['abstract']
-    df['C'] = df['abstract'].apply(lambda abstract: contains_words(abstract))
+    df['C'] = df['abstract'].apply(lambda abstract: contains_words(abstract)) | df['title_contains_deep'] | df['title_contains_neural'] | df['title_contains_embedding'] | df['title_contains_gan']
     df['C'] = df['C'].astype(int)
     df['T'] = df['num_ref_to_theorems'] > 0
     df['T'] = df['T'].astype(int)
