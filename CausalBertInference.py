@@ -35,7 +35,7 @@ def compute_model_dependent_stats(df):
 def compute_model_independent_stats(df, z_1, z_0):
     def simulation_y0(z, b_1 = 5):
         pi_z = 0.07
-        if z == 0:
+        if z == 1:
             pi_z = 0.27
         else:
             pi_z = 0.07
