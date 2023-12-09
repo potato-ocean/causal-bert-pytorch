@@ -42,12 +42,12 @@ def compute_model_independent_stats(df, z_1, z_0):
         
         y1_prob = 1/(1 + np.exp(0.25 * 1 + b_1 * (pi_z - 0.2)))
         y0_prob = 1/(1 + np.exp(0.25 * 0 + b_1 * (pi_z - 0.2)))
-        print("y1prob", y1_prob)
-        print("y0prob", y0_prob)
+        #print("y1prob", y1_prob)
+        #print("y0prob", y0_prob)
         y1 = bernoulli.rvs(y1_prob)
         y0 = bernoulli.rvs(y0_prob)
-        print("y1",y1)
-        print("y0", y0)
+        #print("y1",y1)
+        #print("y0", y0)
 
         return y0
     
@@ -60,12 +60,12 @@ def compute_model_independent_stats(df, z_1, z_0):
         
         y1_prob = 1/(1 + np.exp(0.25 * 1 + b_1 * (pi_z - 0.2)))
         y0_prob = 1/(1 + np.exp(0.25 * 0 + b_1 * (pi_z - 0.2)))
-        print("y1prob", y1_prob)
-        print("y0prob", y0_prob)
+        #print("y1prob", y1_prob)
+        #print("y0prob", y0_prob)
         y1 = bernoulli.rvs(y1_prob)
         y0 = bernoulli.rvs(y0_prob)
-        print("y1",y1)
-        print("y0", y0)
+        #print("y1",y1)
+        #print("y0", y0)
 
         return y1
 
