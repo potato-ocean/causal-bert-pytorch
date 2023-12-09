@@ -29,17 +29,13 @@ def compute_model_dependent_stats(df):
     print("plug_in_ATT: ", plug_in_ATT)
 
 
-def compute_true_propensity_scores(df):
-    propensity_score_0 = df[df['C'] == 1]
-    propensity_score_1 = df[df['C'] == 0]
 
 
 
-
-def compute_model_independent_stats(df):
+def compute_model_independent_stats(df, z_1, z_0):
     def simulation_y0(z, b_1 = 5):
         pi_z = 0.07
-        if z == 1:
+        if z == 0:
             pi_z = 0.27
         else:
             pi_z = 0.07
@@ -58,9 +54,9 @@ def compute_model_independent_stats(df):
     def simulation_y1(z, b_1 = 5):
         pi_z = 0.07
         if z == 1:
-            pi_z = 0.27
+            pi_z = z_1
         else:
-            pi_z = 0.07
+            pi_z = z_0
         
         y1_prob = 1/(1 + np.exp(0.25 * 1 + b_1 * (pi_z - 0.2)))
         y0_prob = 1/(1 + np.exp(0.25 * 0 + b_1 * (pi_z - 0.2)))
@@ -97,4 +93,19 @@ if __name__ == '__main__':
     df['Y'] = df['accepted']
     print('done reading csv')
     #compute_model_dependent_stats(df)
-    compute_model_independent_stats(df)    
+
+    print("Ground truth for base experiment")
+    compute_model_independent_stats(df, 0.27, 0.07)
+
+    print("Ground truth for top 10 experiment")
+    compute_model_independent_stats(df, 0.27, 0.21)
+
+    print("Ground truth for top 20 experiment")
+    compute_model_independent_stats(df, 0.26, 0.22)
+
+    print("Ground truth for top 50 experiment")
+    compute_model_independent_stats(df, 0.22, 0.24)
+
+
+
+    
